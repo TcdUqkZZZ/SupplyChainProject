@@ -6,11 +6,11 @@ import "../accesscontrol/LapidaryRole.sol" as Lapidary;
 import "../accesscontrol/ClientRole.sol" as Client;
 import "../core/Ownable.sol" as Ownable;
 contract SupplyChain is Ownable.Ownable,
-                    Miner.minerRole ,
-                     Grader.graderRole,
-                     Merchant.merchantRole,
-                     Lapidary.lapidaryRole,
-                     Client.clientRole
+                    Miner.MinerRole ,
+                     Grader.GraderRole,
+                     Merchant.MerchantRole,
+                     Lapidary.LapidaryRole,
+                     Client.ClientRole
                      
     {
 
@@ -45,7 +45,6 @@ contract SupplyChain is Ownable.Ownable,
         address lapidaryId;
         string mineLatitude;
         string mineLongitude;
-        uint productId;
         address merchantId;
         address clientId;
         uint price;
@@ -99,7 +98,12 @@ contract SupplyChain is Ownable.Ownable,
         _;
     }
 
-    constructor() payable Ownable.Ownable() {
+    constructor() payable Ownable.Ownable() 
+                            Miner.MinerRole()
+                            Merchant.MerchantRole()
+                            Grader.GraderRole()
+                            Lapidary.LapidaryRole()
+                            Client.ClientRole(){
         _sku = 1;
         _upc = 1;
         }
@@ -163,7 +167,7 @@ contract SupplyChain is Ownable.Ownable,
             emit Sold(__upc);
         }
 
-          function fetchItemBuffer(uint __upc) public view returns
+         function fetchItemBuffer1(uint __upc) public view returns
     (
         uint sku,
         State state,
@@ -172,15 +176,8 @@ contract SupplyChain is Ownable.Ownable,
         string memory cut,
         uint weight,
         address ownerId,
-        address minerId,
-        address graderId,
-        address lapidaryId,
-        string memory mineLatitude,
-        string memory mineLongitude,
-        uint productId,
-        address merchantId,
-        address clientId,
-        uint price
+        address minerId
+
     ){
          Stone memory current = stones[__upc];
         return (
@@ -191,43 +188,29 @@ contract SupplyChain is Ownable.Ownable,
             current.cut,
             current.weight,
             current.ownerId,
-            current.minerId,
+            current.minerId
+        );
+    }
+
+    function fetchItemBuffer2(uint __upc) public view returns (
+        address graderId,
+        address lapidaryId,
+        string memory mineLatitude,
+        string memory mineLongitude,
+        address merchantId,
+        address clientId,
+        uint price
+    ){
+        Stone memory current = stones[__upc];
+
+        return (
             current.graderId,
             current.lapidaryId,
             current.mineLatitude,
             current.mineLongitude,
-            current.productId,
             current.merchantId,
             current.clientId,
             current.price
-
         );
-    }
-
-
-
-    function fetchProductId(uint __upc) public view returns (uint id) {
-        return stones[__upc].productId;
-    }
-
-    function fetchMinerId(uint __upc) public view returns (address minerId){
-        return stones[__upc].minerId;
-    }
-
-    function fetchMineLocation(uint __upc) public view returns 
-    (string memory latitude, string memory longitude){
-        return (stones[__upc].mineLatitude, stones[__upc].mineLongitude);
-    }
- 
-    function fetchStoneType(uint __upc) public view returns (string memory stoneType){
-        return stones[__upc].stoneType;
-    }
-
-    function fetchStoneGrade(uint __upc) public view returns (string memory stoneGrade){
-        return stones[__upc].grade;
-    }
-
-    function fetchOwner(uint __upc) public view returns (address ownerId){
-        return stones[__upc].ownerId;
     }
 }

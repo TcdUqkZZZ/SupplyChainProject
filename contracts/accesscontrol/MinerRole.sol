@@ -2,7 +2,7 @@
 pragma solidity >= 0.8.0;
 import "./Roles.sol";
 
-contract minerRole {
+contract MinerRole {
     event minerAdded(address indexed addr);
     event minerRemoved(address indexed addr);
     Roles.Role miners;

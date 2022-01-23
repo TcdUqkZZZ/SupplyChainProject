@@ -2,7 +2,7 @@
 pragma solidity >= 0.8.0;
 import "./Roles.sol";
 
-contract graderRole {
+contract GraderRole {
     event graderAdded(address indexed addr);
     event graderRemoved(address indexed addr);
     Roles.Role graders;

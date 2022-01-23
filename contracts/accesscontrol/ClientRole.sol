@@ -2,7 +2,7 @@
 pragma solidity >= 0.8.0;
 import "./Roles.sol";
 
-contract clientRole {
+contract ClientRole {
     event clientAdded(address indexed addr);
     event clientRemoved(address indexed addr);
     Roles.Role clients;

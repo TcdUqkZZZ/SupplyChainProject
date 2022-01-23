@@ -2,7 +2,7 @@
 pragma solidity >= 0.8.0;
 import "./Roles.sol";
 
-contract lapidaryRole {
+contract LapidaryRole {
     event lapidaryAdded(address indexed addr);
     event lapidaryRemoved(address indexed addr);
     Roles.Role lapidarys;
