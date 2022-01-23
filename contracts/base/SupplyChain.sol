@@ -4,13 +4,17 @@ import "../accesscontrol/GraderRole.sol" as Grader;
 import "../accesscontrol/MerchantRole.sol" as Merchant;
 import "../accesscontrol/LapidaryRole.sol" as Lapidary;
 import "../accesscontrol/ClientRole.sol" as Client;
-contract SupplyChain is Miner.minerRole ,
+import "../core/Ownable.sol" as Ownable;
+contract SupplyChain is Ownable.Ownable,
+                    Miner.minerRole ,
                      Grader.graderRole,
                      Merchant.merchantRole,
                      Lapidary.lapidaryRole,
-                     Client.clientRole{
+                     Client.clientRole
+                     
+    {
 
-    address owner;
+    //address owner;
     uint _upc;
     uint _sku;
     
@@ -52,11 +56,6 @@ contract SupplyChain is Miner.minerRole ,
     event Graded(uint upc);
     event ForSale(uint upc);
     event Sold(uint upc);
-
-    modifier onlyOwner() {
-        require (msg.sender == owner);
-        _;
-    }
 
     modifier verifyCaller (address _address) {
         require(msg.sender == _address);
@@ -100,11 +99,11 @@ contract SupplyChain is Miner.minerRole ,
         _;
     }
 
-    constructor() payable {
-        owner = msg.sender;
+    constructor() payable Ownable.Ownable() {
         _sku = 1;
         _upc = 1;
-    }
+        }
+    
 
 
        function mineStone(string memory _type,
