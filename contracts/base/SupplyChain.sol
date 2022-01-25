@@ -136,34 +136,45 @@ contract SupplyChain is Ownable.Ownable,
         function facetStone(uint __upc,
         string memory _cut,
         uint cutWeight) public onlyLapidary rough(_upc){
-            require(cutWeight < stones[__upc].weight);
-            stones[_upc].cut = _cut;
-            stones[_upc].state = State.Faceted;
+            require(cutWeight <= stones[__upc].weight);
+            Stone memory cutStone = stones[__upc];
+            cutStone.cut = _cut;
+            cutStone.weight = cutWeight;
+            cutStone.state = State.Faceted;
+            cutStone.lapidaryId = msg.sender;
+            stones[cutStone.upc] = cutStone;
             emit Faceted(__upc);
         }
 
         function gradeStone(uint __upc,
         string memory _grade) public onlyGrader faceted(__upc) {
-            stones[__upc].grade = _grade;
-            stones[__upc].state = State.Graded;
-            stones[__upc].graderId = msg.sender;
-            emit Graded(_upc);
+            Stone memory gradedStone = stones[__upc];
+            gradedStone.grade = _grade;
+            gradedStone.state = State.Graded;
+            gradedStone.graderId = msg.sender;
+            stones[gradedStone.upc] = gradedStone;
+            emit Graded(__upc);
         }
 
         function sellStone(uint __upc, uint _price) public
         onlyMerchant graded(__upc){
-            stones[__upc].price = _price;
-            stones[__upc].state = State.ForSale;
-            stones[__upc].merchantId = msg.sender;
+            Stone memory stoneForSale = stones[__upc];
+            stoneForSale.price = _price;
+            stoneForSale.state = State.ForSale;
+            stoneForSale.merchantId = msg.sender;
+            stones[stoneForSale.upc] = stoneForSale;
             emit ForSale(__upc);
         }
 
-        function buyItem(uint __upc) public payable forSale(__upc) 
+        function buyStone(uint __upc) public payable forSale(__upc) 
         paidEnough(stones[__upc].price)
         checkValue(__upc)
         onlyClient {
-            stones[__upc].ownerId = msg.sender;
-            stones[__upc].state = State.Sold;
+            Stone memory soldStone = stones[__upc];
+            soldStone.ownerId = msg.sender;
+            soldStone.state = State.Sold;
+            soldStone.clientId = msg.sender;
+            stones[soldStone.upc] = soldStone;
             emit Sold(__upc);
         }
 

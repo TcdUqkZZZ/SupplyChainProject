@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fair Trade Coffee</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1 style="text-align: center;">Mine, Facet, Grade, Buy and sell stones</h1>
+        <hr>
+        <p style="text-align: center;">Tracking precious stones through the Ethereum blockchain.</p>
+    </div>
+
+    <div id="ftc-harvest" >
+        <h2 style="text-align: center;" >Query stone</h2>
+        <div class="form-group" style="text-align: center;">
+            SKU
+            <br>
+            <input class="input-field" type="number" id="sku" name="sku" value=1><br>
+            UPC
+            <br>
+            <input type="number" id="upc" name="upc" value=1><br>
+            Current Owner ID
+            <br>
+            <input type="text" id="ownerID" name="ownerID" value="" size="50"><br>
+            <div class=button-div>
+                <button class="btn-fetchOne" id="button" type="button" data-id="9">Fetch Data 1</button>
+                <button class="btn-fetchTwo" id="button" type="button" data-id="10">Fetch Data 2</button>
+            </div>
+        </div>
+        <div class=form-break></div>
+        <h2>Miner form</h2>
+        <div class="form-group ">
+            Miner ID
+            <br>
+            <input type="text" id="minerId" name="minerId" value="0"
+                size="50"><br>
+            <br>
+            Mine Latitude
+            <br>
+            <input type="text" id="originMineLatitude" name="originMineLatitude" value=""><br>
+            Mine Longitude
+            <br>
+            <input type="text" id="originMineLongitude" name="originMineLongitude" value=""><br>
+            <br>
+            Stone Type
+            <br>
+            <input type="text" id="stoneType" name="stoneType" value=""><br>
+            <br>
+            Stone Weight
+            <br>
+            <input type="number" id="stoneWeight" name="stoneWeight" value=""><br>
+            <br>
+            <button class="btn-mine" id="button" type="button" data-id="1" onclick="App.mineStone()">Mine</button>
+        </div>
+
+        <div class=form-break></div>
+        <h2 >Lapidary form</h2>
+        <div class="form group">
+            Lapidary ID
+            <br>
+            <input type="text" id="lapidaryID" name="lapidaryID" value=""size="50"><br>
+            Cut
+            <br>
+            <input type="text" id="cut" name="cut" value=""><br>
+            Cut Weight
+            <br>
+            <input type="number" id="cutWeight" name="cutWeight" value=""><br>
+            <br>
+            <button class="btn-facet" id="button" type="button" data-id="2"onclick="App.facetStone()">Facet</button>
+
+
+        </div>
+
+        <div class=form-break></div>
+        <h2>Grader form</h2>
+        <div class="form group">
+            Grader ID
+            <br>
+            <input type="text" id="graderID" name="graderID" value=""size="50"><br>
+            Grade
+            <br>
+            <input type="text" id="grade" name="grade" value=""><br>
+            <button class="btn-grade" id="button" type="button" data-id="3"onclick="App.gradeStone()">Grade</button>
+        </div>
+
+
+        <div class=form-break></div>
+        <h2>Merchant form</h2>
+        <div class="form-group">
+            Product Price
+            <br>
+            <input type="number" id="productPrice" name="productPrice" value=1>ETH<br>
+            Merchant ID
+            <br>
+            <input type="text" id="merchantID" name="merchantID" value=""
+                size="50"><br>
+            <br>
+            <button class="btn-sell" id="button" type="button" data-id="4" onclick="App.sellStone()">Sell</button>
+        </div>
+        <div class=form-break></div>
+        <hr>
+
+
+        <div class=form-break></div>
+        <h2>Client form</h2>
+        <div class="form-group">
+            Client ID
+            <br>
+            <input type="text" id="clientId" name="clientId" value=""
+                size="50"><br>
+            <br>
+            <button class="btn-buy" id="button" type="button" data-id="5" onclick="App.buyStone()">Buy</button>
+        </div>
+        <div class=form-break></div>
+        <hr>
+    </div>
+
+    <h2>Transaction History<span id="ftc-history"></span></h2>
+    <div>
+        <ul id="ftc-events">
+            <!-- Events will appear here from app.js -->
+        </ul>
+        <br>
+        <hr>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/truffle-contract@latest/dist/truffle-contract.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
