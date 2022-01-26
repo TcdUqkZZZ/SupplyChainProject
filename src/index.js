@@ -202,7 +202,6 @@ App = {
       document.getElementById("stoneWeight").value=`${response[5]}`;
       document.getElementById("ownerId").value=`${response[6]}`;
       document.getElementById("minerId").value=`${response[7]}`;
-      App.readForm();
     },
 
     fetchItemBuffer2: async() => {
@@ -217,7 +216,6 @@ App = {
       document.getElementById("merchantId").value=`${response[4]}`;
       document.getElementById("clientId").value=`${response[5]}`;
       document.getElementById("productPrice").value=`${response[6]}`;
-      App.readForm();
     },
 
     fetchEvents: function () {
@@ -233,7 +231,7 @@ App = {
       App.contracts.SupplyChain.deployed().then(function(instance) {
       var events = instance.allEvents(function(err, log){
         if (!err)
-          $("#ftc-events").append('<li>' + log.event + ' - ' + log.transactionHash + '</li>');
+          $("#stone-history").append('<li>' + log.event + ' - ' + log.transactionHash + '</li>');
       });
       }).catch(function(err) {
         console.log(err.message);

@@ -1,0 +1,4 @@
+TruffleAssert was used for easier events testing.
+
+Contract owner has all roles and can extend them onto other addresses,
+after which address can call role-specific functions.
