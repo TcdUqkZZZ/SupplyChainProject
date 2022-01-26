@@ -16,7 +16,7 @@
         <p style="text-align: center;">Tracking precious stones through the Ethereum blockchain.</p>
     </div>
 
-    <div id="ftc-harvest" >
+    <div id="stone-trade" >
         <h2 style="text-align: center;" >Query stone</h2>
         <div class="form-group" style="text-align: center;">
             SKU
@@ -32,8 +32,8 @@
             <input type="number" id="stoneWeight" name="stoneWeight" value=""><br>
             <br>
             <div class=button-div>
-                <button class="btn-fetchOne" id="button" type="button" data-id="9" onclick="App.fetchItemBuffer1()">Fetch Data 1</button>
-                <button class="btn-fetchTwo" id="button" type="button" data-id="10"onclick="App.fetchItemBuffer1()">Fetch Data 2</button>
+                <button class="btn-fetchOne" id="button" type="button" data-id="6" onclick="App.fetchItemBuffer1()">Fetch Data 1</button>
+                <button class="btn-fetchTwo" id="button" type="button" data-id="7"onclick="App.fetchItemBuffer1()">Fetch Data 2</button>
             </div>
         </div>
         <div class=form-break></div>
@@ -46,10 +46,10 @@
             <br>
             Mine Latitude
             <br>
-            <input type="text" id="originMineLatitude" name="originMineLatitude" value=""><br>
+            <input type="text" id="mineLatitude" name="mineLatitude" value=""><br>
             Mine Longitude
             <br>
-            <input type="text" id="originMineLongitude" name="originMineLongitude" value=""><br>
+            <input type="text" id="mineLongitude" name="mineLongitude" value=""><br>
             <br>
             Stone Type
             <br>
@@ -59,7 +59,7 @@
             <br>
             <input type="number" id="minerWeight" name="minerWeight" value=""><br>
             <br>
-            <button class="btn-mine" id="button" type="button" data-id="1" onclick="App.mineStone()">Mine</button>
+            <button class="btn-mine" id="button" type="button" data-id="1">Mine</button>
         </div>
 
         <div class=form-break></div>
@@ -75,7 +75,7 @@
             <br>
             <input type="number" id="cutWeight" name="cutWeight" value=""><br>
             <br>
-            <button class="btn-facet" id="button" type="button" data-id="2"onclick="App.facetStone()">Facet</button>
+            <button class="btn-facet" id="button" type="button" data-id="2">Facet</button>
 
 
         </div>
@@ -89,7 +89,7 @@
             Grade
             <br>
             <input type="text" id="grade" name="grade" value=""><br>
-            <button class="btn-grade" id="button" type="button" data-id="3"onclick="App.gradeStone()">Grade</button>
+            <button class="btn-grade" id="button" type="button" data-id="3">Grade</button>
         </div>
 
 
@@ -104,7 +104,7 @@
             <input type="text" id="merchantId" name="merchantId" value=""
                 size="50"><br>
             <br>
-            <button class="btn-sell" id="button" type="button" data-id="4" onclick="App.sellStone()">Sell</button>
+            <button class="btn-sell" id="button" type="button" data-id="4">Sell</button>
         </div>
         <div class=form-break></div>
         <hr>
@@ -118,21 +118,22 @@
             <input type="text" id="clientId" name="clientId" value=""
                 size="50"><br>
             <br>
-            <button class="btn-buy" id="button" type="button" data-id="5" onclick="App.buyStone()">Buy</button>
+            <button class="btn-buy" id="button" type="button" data-id="5" >Buy</button>
         </div>
         <div class=form-break></div>
         <hr>
     </div>
 
-    <h2>Transaction History<span id="ftc-history"></span></h2>
+    <h2>Transaction History<span id="stone-history"></span></h2>
     <div>
-        <ul id="ftc-events">
+        <ul id="stone-events">
             <!-- Events will appear here from app.js -->
         </ul>
         <br>
         <hr>
     </div>
 
+    <script src="https://unpkg.com/@metamask/legacy-web3@latest/dist/metamask.web3.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/truffle-contract@latest/dist/truffle-contract.js"></script>

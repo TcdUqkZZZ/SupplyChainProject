@@ -8,7 +8,8 @@ module.exports = {
                     "https": require.resolve("https-browserify"),
                     "http": require.resolve("stream-http"),
                     "crypto": require.resolve("crypto-browserify"),
-                    "stream": require.resolve("stream-browserify")
+                    "stream": require.resolve("stream-browserify"),
+                    "util" : require.resolve("util/")
                 }
                 },
   mode: 'development',

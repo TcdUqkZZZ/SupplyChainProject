@@ -1,6 +1,4 @@
-import Web3 from "web3";
-import SupplyChainArtifact from "../build/contracts/SupplyChain.json"
-const App = {
+App = {
     web3Provider: null,
     contracts: {},
     emptyAddress: "0x0000000000000000000000000000000000000000",
@@ -8,11 +6,9 @@ const App = {
     upc: 0,
     metamaskAccountID: "0x0000000000000000000000000000000000000000",
     ownerID: "0x0000000000000000000000000000000000000000",
-    originMinerID: "0x0000000000000000000000000000000000000000",
-    originMineName: null,
-    originMineInformation: null,
-    originMineLatitude: null,
-    originMineLongitude: null,
+    minerID: "0x0000000000000000000000000000000000000000",
+    mineLatitude: null,
+    mineLongitude: null,
     productNotes: null,
     productPrice: 0,
     cut: null,
@@ -27,109 +23,178 @@ const App = {
 
 
     init: async function () {
-        const {web3} = this;
-        try {
-            // get contract instance
-            const networkId = await web3.eth.net.getId();
-            const deployedNetwork = SupplyChainArtifact.networks[networkId];
-            this.meta = new web3.eth.Contract(
-              starNotaryArtifact.abi,
-              deployedNetwork.address,
-            );
-            // get accounts
-            const accounts = await web3.eth.getAccounts();
-            this.account = accounts[0];
-          } catch (error) {
-            console.error("Could not connect to contract or chain.");
-          }
         App.readForm();
-        /// Setup access to blockchain
         return await App.initWeb3();
     },
 
+    readForm: () => {
+      App.sku = $("#sku").val();
+      App.upc = $("#upc").val();
+      App.ownerID = $("#ownerId").val();
+      App.minerID = $("#minerId").val();
+      App.mineLatitude = $("#mineLatitude").val();
+      App.mineLongitude = $("#mineLongitude").val();
+      App.productPrice = $("#productPrice").val();
+      App.lapidaryID = $("#lapidaryId").val();
+      App.graderID = $("#graderId").val();
+      App.merchantID = $("#merchantId").val();
+      App.clientID = $("#clientId").val();
+      App.cut = $("#cut").val();
+      App.baseWeight = $("#minerWeight").val();
+      App.cutWeight = $("#cutWeight").val();
+      App.grade = $("#grade").val();
+      App.stoneType = $("#stoneType").val();
+      
+  
+      console.log(
+          App.sku,
+          App.upc,
+          App.ownerID, 
+          App.minerID, 
+          App.mineLatitude, 
+          App.mineLongitude, 
+          App.productNotes, 
+          App.productPrice, 
+          App.distributorID, 
+          App.retailerID, 
+          App.consumerID,
+          App.cut,
+          App.grade,
+          App.stoneType,
+      );
+  },
 
-    readForm: function () {
-        App.sku = $("#sku").val();
-        App.upc = $("#upc").val();
-        App.ownerID = $("#ownerID").val();
-        App.originMinerID = $("#originMinerID").val();
-        App.originMineName = $("#originMineName").val();
-        App.originMineInformation = $("#originMineInformation").val();
-        App.originMineLatitude = $("#originMineLatitude").val();
-        App.originMineLongitude = $("#originMineLongitude").val();
-        App.productPrice = $("#productPrice").val();
-        App.lapidaryID = $("#lapidaryID").val();
-        App.graderID = $("#graderID").val();
-        App.merchantID = $("#merchantID").val();
-        App.clientID = $("#clientID").val();
-        App.cut = $("#cut").val();
-        App.cutWeight = $("#cutWeight").val();
-        App.grade = $("#grade").val();
-        
+    initWeb3: async () => {
+      if (window.ethereum) {
+        App.web3Provider = window.ethereum;
+      }
+      try {
+        await window.ethereum.enable();
+      } catch (error) {
+        console.error("access denied");
+      }
 
-        console.log(
-            App.sku,
-            App.upc,
-            App.ownerID, 
-            App.originFarmerID, 
-            App.originMineName, 
-            App.originMineInformation, 
-            App.originMineLatitude, 
-            App.originMineLongitude, 
-            App.productNotes, 
-            App.productPrice, 
-            App.distributorID, 
-            App.retailerID, 
-            App.consumerID,
-            App.cut,
-            App.grade,
-        );
+      App.getMetamaskAccountID();
+      return App.initSupplyChain();
     },
 
-    mineStone: async () => {
-        App.readForm();
-        const { mineStone } = this.meta.methods;
-            await mineStone(App.stoneType,
-                 app.baseWeight,
+    getMetamaskAccountID: () => {
+      web3 = new Web3(App.web3Provider);
+
+      web3.eth.getAccounts((err,res) => {
+        if (err) {
+          console.error(`Error: ${err}`);
+          return;
+        }
+        console.log(`getMetamaskID: ${res}`);
+
+        App.metamaskAccountID = res[0];
+      })
+    },
+
+    initSupplyChain: () => {
+      var jsonSupplyChain = '../build/contracts/SupplyChain.json';
+      $.getJSON(jsonSupplyChain, function(data) {
+        console.log(`data: ${data}`);
+        let SupplyChainArtifact = data;
+        App.contracts.SupplyChain = TruffleContract(SupplyChainArtifact);
+        App.contracts.SupplyChain.setProvider(App.web3Provider);
+        App.fetchItemBuffer1();
+        App.fetchItemBuffer2();
+        App.fetchEvents();
+      });
+      return App.bindEvents();
+    },
+
+    bindEvents: function() {
+      $(document).on('click', App.handleButtonClick);
+  },
+
+  handleButtonClick: async function(event) {
+    event.preventDefault();
+    App.readForm();
+    App.getMetamaskAccountID();
+
+    var processId = parseInt($(event.target).data('id'));
+    console.log('processId',processId);
+
+    switch(processId) {
+        case 1:
+            return await App.mineStone(event);
+            break;
+        case 2:
+            return await App.facetStone(event);
+            break;
+        case 3:
+            return await App.gradeStone(event);
+            break;
+        case 4:
+            return await App.sellStone(event);
+            break;
+        case 5:
+            return await App.buyStone(event);
+            break;
+        case 6:
+            return await App.fetchItemBuffer1(event);
+            break;
+        case 7:
+            return await App.fetchItemBuffer2(event);
+            break;
+        }
+},
+
+
+    mineStone: async (event) => {
+      event.preventDefault();
+      var processId = parseInt($(event.target).data('id'));
+      let instance = await App.contracts.SupplyChain.deployed();
+       await instance.mineStone(App.stoneType,
+                 App.baseWeight,
                 0,
-                App.originMineLatitude,
-                App.originMinelongitude);
+                App.mineLatitude,
+                App.mineLongitude,
+                {from: `${App.minerID}`});
+
+      
         
     },
 
     facetStone: async () => {
-        App.readForm();
-        const { facetStone } = this.meta.methods;
-        await facetStone(App.upc, App.cut, App.cutWeight);
+      let instance = await App.contracts.SupplyChain.deployed();
+
+        
+          await instance.facetStone(App.upc, App.cut, App.cutWeight,
+            {from: `${App.lapidaryID}`});
     },
 
     gradeStone: async () => {
-        App.readForm();
-        const { gradeStone } = this.meta.methods;
+      let instance = await App.contracts.SupplyChain.deployed();
 
-        await gradeStone(App.upc, App.grade);
+        App.readForm();
+        await instance.gradeStone(App.upc, App.grade,{from: `${App.graderID}`});
 
     },
 
     sellStone: async() => {
-        App.readForm();
-        const {sellStone} = this.meta.methods;
-        const price = document.getElementById("price").value
+      let instance = await App.contracts.SupplyChain.deployed();
 
-        await sellStone(upc, App.productPrice);
+        App.readForm();
+
+        await instance.sellStone(App.upc, App.productPrice, {from: `${App.merchantID}`});
     },
 
     buyStone: async() => {
-        const {buyStone} = this.meta.methods;
+      let instance = await App.contracts.SupplyChain.deployed();
 
-        await buyStone(upc);
+        await instance.buyStone(App.upc, {from: `${App.clientID}`});
         
     },
 
     fetchItemBuffer1: async() => {
-      const{fetchItemBuffer1} = this.meta.methods;
+      let instance = await App.contracts.SupplyChain.deployed();
 
-      response = await fetchItemBuffer1(upc);
+
+      response = await instance.fetchItemBuffer1(App.upc);
       document.getElementById("sku").value=`${response[0]}`;
       document.getElementById("stoneType").value=`${response[2]}`;
       document.getElementById("grade").value=`${response[3]}`;
@@ -141,31 +206,45 @@ const App = {
     },
 
     fetchItemBuffer2: async() => {
-      const{fetchItemBuffer3} = this.meta.methods;
+      let instance = await App.contracts.SupplyChain.deployed();
 
-      response = await fetchItemBuffer2(upc);
+      response = await instance.fetchItemBuffer2(App.upc);
 
       document.getElementById("graderId").value=`${response[0]}`;
       document.getElementById("lapidaryId").value=`${response[1]}`;
-      document.getElementById("originMineLatitude").value=`${response[2]}`;
-      document.getElementById("originMineLongitude").value=`${response[3]}`;
+      document.getElementById("mineLatitude").value=`${response[2]}`;
+      document.getElementById("mineLongitude").value=`${response[3]}`;
       document.getElementById("merchantId").value=`${response[4]}`;
       document.getElementById("clientId").value=`${response[5]}`;
-      document.getElementById("price").value=`${response[6]}`;
+      document.getElementById("productPrice").value=`${response[6]}`;
       App.readForm();
-    }
+    },
 
-}
+    fetchEvents: function () {
+      if (typeof App.contracts.SupplyChain.currentProvider.sendAsync !== "function") {
+          App.contracts.SupplyChain.currentProvider.sendAsync = function () {
+              return App.contracts.SupplyChain.currentProvider.send.apply(
+              App.contracts.SupplyChain.currentProvider,
+                  arguments
+            );
+          };
+      }
 
-window.App = App;
-
-window.addEventListener("load", async function() {
-  if (window.ethereum) {
-    // use MetaMask's provider
-    App.web3 = new Web3(window.ethereum);
-    await window.ethereum.enable(); // get permission to access accounts
+      App.contracts.SupplyChain.deployed().then(function(instance) {
+      var events = instance.allEvents(function(err, log){
+        if (!err)
+          $("#ftc-events").append('<li>' + log.event + ' - ' + log.transactionHash + '</li>');
+      });
+      }).catch(function(err) {
+        console.log(err.message);
+      });
+      
   }
+};
+$(function () {
+  $(window).load(function () {
+      App.init();
+  });
+});
 
-  App.init();
-}
-);
+
