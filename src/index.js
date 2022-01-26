@@ -124,6 +124,35 @@ App = {
 
         await buyStone(upc);
         
+    },
+
+    fetchItemBuffer1: async() => {
+      const{fetchItemBuffer1} = this.meta.methods;
+
+      response = await fetchItemBuffer1(upc);
+      document.getElementById("sku").value=`${response[0]}`;
+      document.getElementById("stoneType").value=`${response[2]}`;
+      document.getElementById("grade").value=`${response[3]}`;
+      document.getElementById("cut").value=`${response[4]}`;
+      document.getElementById("stoneWeight").value=`${response[5]}`;
+      document.getElementById("ownerId").value=`${response[6]}`;
+      document.getElementById("minerId").value=`${response[7]}`;
+      App.readForm();
+    },
+
+    fetchItemBuffer2: async() => {
+      const{fetchItemBuffer3} = this.meta.methods;
+
+      response = await fetchItemBuffer2(upc);
+
+      document.getElementById("graderId").value=`${response[0]}`;
+      document.getElementById("lapidaryId").value=`${response[1]}`;
+      document.getElementById("originMineLatitude").value=`${response[2]}`;
+      document.getElementById("originMineLongitude").value=`${response[3]}`;
+      document.getElementById("merchantId").value=`${response[4]}`;
+      document.getElementById("clientId").value=`${response[5]}`;
+      document.getElementById("price").value=`${response[6]}`;
+      App.readForm();
     }
 
 }

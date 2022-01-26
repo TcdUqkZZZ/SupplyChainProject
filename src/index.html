@@ -27,10 +27,13 @@
             <input type="number" id="upc" name="upc" value=1><br>
             Current Owner ID
             <br>
-            <input type="text" id="ownerID" name="ownerID" value="" size="50"><br>
+            <input type="text" id="ownerId" name="ownerId" value="" size="50"><br>
+            <br>
+            <input type="number" id="stoneWeight" name="stoneWeight" value=""><br>
+            <br>
             <div class=button-div>
-                <button class="btn-fetchOne" id="button" type="button" data-id="9">Fetch Data 1</button>
-                <button class="btn-fetchTwo" id="button" type="button" data-id="10">Fetch Data 2</button>
+                <button class="btn-fetchOne" id="button" type="button" data-id="9" onclick="App.fetchItemBuffer1()">Fetch Data 1</button>
+                <button class="btn-fetchTwo" id="button" type="button" data-id="10"onclick="App.fetchItemBuffer1()">Fetch Data 2</button>
             </div>
         </div>
         <div class=form-break></div>
@@ -54,7 +57,7 @@
             <br>
             Stone Weight
             <br>
-            <input type="number" id="stoneWeight" name="stoneWeight" value=""><br>
+            <input type="number" id="minerWeight" name="minerWeight" value=""><br>
             <br>
             <button class="btn-mine" id="button" type="button" data-id="1" onclick="App.mineStone()">Mine</button>
         </div>
@@ -64,7 +67,7 @@
         <div class="form group">
             Lapidary ID
             <br>
-            <input type="text" id="lapidaryID" name="lapidaryID" value=""size="50"><br>
+            <input type="text" id="lapidaryId" name="lapidaryId" value=""size="50"><br>
             Cut
             <br>
             <input type="text" id="cut" name="cut" value=""><br>
@@ -82,7 +85,7 @@
         <div class="form group">
             Grader ID
             <br>
-            <input type="text" id="graderID" name="graderID" value=""size="50"><br>
+            <input type="text" id="graderId" name="graderId" value=""size="50"><br>
             Grade
             <br>
             <input type="text" id="grade" name="grade" value=""><br>
@@ -98,7 +101,7 @@
             <input type="number" id="productPrice" name="productPrice" value=1>ETH<br>
             Merchant ID
             <br>
-            <input type="text" id="merchantID" name="merchantID" value=""
+            <input type="text" id="merchantId" name="merchantId" value=""
                 size="50"><br>
             <br>
             <button class="btn-sell" id="button" type="button" data-id="4" onclick="App.sellStone()">Sell</button>
