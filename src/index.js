@@ -1,6 +1,6 @@
 import Web3 from "web3";
 import SupplyChainArtifact from "../build/contracts/SupplyChain.json"
-App = {
+const App = {
     web3Provider: null,
     contracts: {},
     emptyAddress: "0x0000000000000000000000000000000000000000",
@@ -165,5 +165,7 @@ window.addEventListener("load", async function() {
     App.web3 = new Web3(window.ethereum);
     await window.ethereum.enable(); // get permission to access accounts
   }
+
+  App.init();
 }
 );
