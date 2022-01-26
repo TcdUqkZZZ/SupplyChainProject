@@ -2,3 +2,7 @@ TruffleAssert was used for easier events testing.
 
 Contract owner has all roles and can extend them onto other addresses,
 after which address can call role-specific functions.
+
+node v17.3.0
+truffle 5.4.1
+web3.js 1.4.0
